@@ -513,8 +513,8 @@ class ReactExoplayerView extends FrameLayout implements
             Format videoFormat = player.getVideoFormat();
             int width = videoFormat != null ? videoFormat.width : 0;
             int height = videoFormat != null ? videoFormat.height : 0;
-            eventEmitter.load(player.getDuration(), player.getCurrentPosition(), width, height,
-                    getAudioTrackInfo(), getTextTrackInfo());
+            eventEmitter.load(player.getDuration(), player.getCurrentPosition(), width, height, videoFormat.rotationDegrees, getAudioTrackInfo(), getTextTrackInfo());
+            // eventEmitter.load(player.getDuration(), player.getCurrentPosition(), width, height, videoFormat.rotationDegrees);
         }
     }
 
@@ -754,59 +754,75 @@ class ReactExoplayerView extends FrameLayout implements
         this.repeat = repeat;
     }
 
-    public void setSelectedTextTrack(String type, Dynamic value) {
-//        textTrackType = type;
-//        textTrackValue = value;
-//
-//        int index = getTextTrackRendererIndex();
-//        if (index == C.INDEX_UNSET) {
-//            return;
-//        }
-//        MappingTrackSelector.MappedTrackInfo info = trackSelector.getCurrentMappedTrackInfo();
-//        if (info == null) {
-//            return;
-//        }
-//
-//        TrackGroupArray groups = info.getTrackGroups(index);
-//        int trackIndex = C.INDEX_UNSET;
-//        if (TextUtils.isEmpty(type)) {
-//            // Do nothing
-//        } else if (type.equals("disabled")) {
-//            trackSelector.setSelectionOverride(index, groups, null);
-//            return;
-//        } else if (type.equals("language")) {
-//            for (int i = 0; i < groups.length; ++i) {
-//                Format format = groups.get(i).getFormat(0);
-//                if (format.language != null && format.language.equals(value.asString())) {
-//                    trackIndex = i;
-//                    break;
-//                }
-//            }
-//        } else if (type.equals("title")) {
-//            for (int i = 0; i < groups.length; ++i) {
-//                Format format = groups.get(i).getFormat(0);
-//                if (format.id != null && format.id.equals(value.asString())) {
-//                    trackIndex = i;
-//                    break;
-//                }
-//            }
-//        } else if (type.equals("index")) {
-//            trackIndex = value.asInt();
-//        } else { // default. invalid type or "system"
-//            trackSelector.clearSelectionOverrides(index);
-//            return;
-//        }
-//
-//        if (trackIndex == C.INDEX_UNSET) {
-//            trackSelector.clearSelectionOverrides(trackIndex);
-//            return;
-//        }
-//
-//        MappingTrackSelector.SelectionOverride override
-//                = new MappingTrackSelector.SelectionOverride(
-//                        new FixedTrackSelection.Factory(), trackIndex, 0);
-//        trackSelector.setSelectionOverride(index, groups, override);
+    public void setSelectedTrack(int trackType, String type, Dynamic value) {
+        // int rendererIndex = getTrackRendererIndex(trackType);
+        // if (rendererIndex == C.INDEX_UNSET) {
+        //     return;
+        // }
+        // MappingTrackSelector.MappedTrackInfo info = trackSelector.getCurrentMappedTrackInfo();
+        // if (info == null) {
+        //     return;
+        // }
+
+        // TrackGroupArray groups = info.getTrackGroups(rendererIndex);
+        // int trackIndex = C.INDEX_UNSET;
+
+        // if (TextUtils.isEmpty(type)) {
+        //     type = "default";
+        // }
+
+        // if (type.equals("disabled")) {
+        //     trackSelector.setSelectionOverride(rendererIndex, groups, null);
+        //     return;
+        // } else if (type.equals("language")) {
+        //     for (int i = 0; i < groups.length; ++i) {
+        //         Format format = groups.get(i).getFormat(0);
+        //         if (format.language != null && format.language.equals(value.asString())) {
+        //             trackIndex = i;
+        //             break;
+        //         }
+        //     }
+        // } else if (type.equals("title")) {
+        //     for (int i = 0; i < groups.length; ++i) {
+        //         Format format = groups.get(i).getFormat(0);
+        //         if (format.id != null && format.id.equals(value.asString())) {
+        //             trackIndex = i;
+        //             break;
+        //         }
+        //     }
+        // } else if (type.equals("index")) {
+        //     if (value.asInt() < groups.length) {
+        //         trackIndex = value.asInt();
+        //     }
+        // } else { // default
+        //     if (rendererIndex == C.TRACK_TYPE_TEXT) { // Use system settings if possible
+        //         int sdk = android.os.Build.VERSION.SDK_INT;
+        //         if (sdk > 18 && groups.length > 0) {
+        //             CaptioningManager captioningManager
+        //                     = (CaptioningManager)themedReactContext.getSystemService(Context.CAPTIONING_SERVICE);
+        //             if (captioningManager != null && captioningManager.isEnabled()) {
+        //                 trackIndex = getTrackIndexForDefaultLocale(groups);
+        //             }
+        //         } else {
+        //             trackSelector.setSelectionOverride(rendererIndex, groups, null);
+        //             return;
+        //         }
+        //     } else if (rendererIndex == C.TRACK_TYPE_AUDIO) {
+        //         trackIndex = getTrackIndexForDefaultLocale(groups);
+        //     }
+        // }
+
+        // if (trackIndex == C.INDEX_UNSET) {
+        //     trackSelector.clearSelectionOverrides(trackIndex);
+        //     return;
+        // }
+
+        // MappingTrackSelector.SelectionOverride override
+        //         = new MappingTrackSelector.SelectionOverride(
+        //         new FixedTrackSelection.Factory(), trackIndex, 0);
+        // trackSelector.setSelectionOverride(rendererIndex, groups, override);
     }
+
 
     private int getTrackIndexForDefaultLocale(TrackGroupArray groups) {
         int trackIndex = 0; // default if no match

@@ -76,7 +76,7 @@ public class ExoPlayerCache extends ReactContextBaseJavaModule {
                         }
                     } catch (IOException e) {
                         // TODO this exception should not be thrown
-                        Log.d(getName(), "Read error");
+                        Log.d(getName(), "Read error" + e.getLocalizedMessage());
                         e.printStackTrace();
                     }
 
